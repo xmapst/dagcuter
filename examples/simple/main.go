@@ -7,8 +7,8 @@ import (
 	"github.com/alirezazeynali75/dagcuter"
 )
 
+type authTask struct{}
 
-type authTask struct {}
 func (a *authTask) Name() string {
 	return "auth"
 }
@@ -27,7 +27,7 @@ func (a *authTask) PostExecution(ctx context.Context, output map[string]any) err
 	return nil
 }
 
-type profileTask struct {}
+type profileTask struct{}
 
 func (a *profileTask) Name() string {
 	return "profile"
@@ -53,8 +53,7 @@ func (a *profileTask) PostExecution(ctx context.Context, output map[string]any) 
 	return nil
 }
 
-
-type offerTask struct {}
+type offerTask struct{}
 
 func (a *offerTask) Name() string {
 	return "offerTask"

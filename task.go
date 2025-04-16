@@ -2,7 +2,6 @@ package dagcuter
 
 import "context"
 
-
 type Task interface {
 	Name() string
 	Dependencies() []string
