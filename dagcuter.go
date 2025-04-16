@@ -113,7 +113,8 @@ func (d *Dagcuter) Execute(ctx context.Context) (map[string]map[string]any, erro
 }
 
 func (d *Dagcuter) ExecutionOrder() string {
-	var sb strings.Builder
+	var sb strings.Builder = strings.Builder{}
+	sb.WriteString("\n")
 	for i, step := range d.executionOrder {
 		fmt.Fprintf(&sb, "%d. %s\n", i+1, step)
 	}
