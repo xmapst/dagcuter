@@ -13,10 +13,13 @@ type Dagcuter struct {
 	mu             sync.Mutex
 }
 
-func NewDagcuter(tasks map[string]Task) *Dagcuter {
+func NewDagcuter(tasks map[string]Task) (*Dagcuter, error) {
+	if hasCycle(tasks) {
+		return nil, fmt.Errorf("circular dependency detected")
+	}
 	return &Dagcuter{
 		Tasks: tasks,
-	}
+	}, nil
 }
 
 func (d *Dagcuter) Execute(ctx context.Context) (map[string]map[string]any, error) {

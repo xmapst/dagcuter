@@ -80,10 +80,13 @@ func main() {
 	tasks["auth"] = &authTask{}
 	tasks["profile"] = &profileTask{}
 	tasks["offerTask"] = &offerTask{}
-	dag := dagcuter.NewDagcuter(
+	dag, err := dagcuter.NewDagcuter(
 		tasks,
 	)
 
+	if err != nil {
+		panic(err)
+	}
 	results, err := dag.Execute(context.Background())
 	if err != nil {
 		panic(err)
