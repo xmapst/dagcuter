@@ -1,6 +1,6 @@
 # Dagcuter
 
-[![codecov](https://codecov.io/gh/alirezazeynali75/dagcuter/graph/badge.svg?token=4LMOTF5CY2)](https://codecov.io/gh/alirezazeynali75/dagcuter)
+[![CI](https://github.com/alirezazeynali75/dagcuter/actions/workflows/main.yml/badge.svg)](https://github.com/alirezazeynali75/dagcuter/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/alirezazeynali75/dagcuter/graph/badge.svg?token=4LMOTF5CY2)](https://codecov.io/gh/alirezazeynali75/dagcuter)
 
 Dagcuter is a Go library for executing Directed Acyclic Graphs (DAGs) of tasks. It allows you to define tasks with dependencies, execute them in the correct order, and handle pre-execution, execution, and post-execution phases.
