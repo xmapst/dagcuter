@@ -17,7 +17,7 @@ type Dagcuter struct {
 	wg             *sync.WaitGroup
 }
 
-func New(tasks map[string]Task) (*Dagcuter, error) {
+func NewDagcuter(tasks map[string]Task) (*Dagcuter, error) {
 	if HasCycle(tasks) {
 		return nil, fmt.Errorf("circular dependency detected")
 	}

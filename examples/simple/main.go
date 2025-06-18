@@ -15,7 +15,7 @@ func (a *authTask) Name() string {
 func (a *authTask) Dependencies() []string {
 	return []string{}
 }
-func (a *authTask) RetryPolicy() *RetryPolicy {
+func (a *authTask) RetryPolicy() *dagcuter.RetryPolicy {
 	return nil // No retry policy for mock tasks
 }
 func (a *authTask) PreExecution(ctx context.Context, input map[string]any) error {
@@ -40,6 +40,9 @@ func (a *profileTask) Dependencies() []string {
 		"auth",
 	}
 }
+func (a *profileTask) RetryPolicy() *dagcuter.RetryPolicy {
+	return nil
+}
 func (a *profileTask) PreExecution(ctx context.Context, input map[string]any) error {
 	fmt.Println("PreExecution profile")
 	return nil
@@ -63,6 +66,9 @@ func (a *offerTask) Name() string {
 }
 func (a *offerTask) Dependencies() []string {
 	return []string{}
+}
+func (a *offerTask) RetryPolicy() *dagcuter.RetryPolicy {
+	return nil // No retry policy for mock tasks
 }
 func (a *offerTask) PreExecution(ctx context.Context, input map[string]any) error {
 	fmt.Println("PreExecution offerTask")
