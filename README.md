@@ -50,6 +50,10 @@ func (t *ExampleTask) Dependencies() []string {
     return t.dependencies
 }
 
+func (t *ExampleTask) RetryPolicy() *dagcuter.RetryPolicy {
+	return nil // No retry policy for mock tasks
+}
+
 func (t *ExampleTask) PreExecution(ctx context.Context, input map[string]any) error {
     fmt.Printf("PreExecution for task: %s\n", t.name)
     return nil

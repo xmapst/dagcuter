@@ -24,6 +24,10 @@ func (m *MockTask) Dependencies() []string {
 	return m.dependencies
 }
 
+func (m *MockTask) RetryPolicy() *RetryPolicy {
+	return nil // No retry policy for mock tasks
+}
+
 func (m *MockTask) PreExecution(ctx context.Context, input map[string]any) error {
 	if m.PreExecFunc != nil {
 		return m.PreExecFunc(ctx, input)

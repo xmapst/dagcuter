@@ -1,6 +1,6 @@
 package dagcuter
 
-func hasCycle(tasks map[string]Task) bool {
+func HasCycle(tasks map[string]Task) bool {
 	visited := make(map[string]bool)
 	recStack := make(map[string]bool)
 

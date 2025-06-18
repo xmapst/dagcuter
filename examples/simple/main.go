@@ -15,6 +15,9 @@ func (a *authTask) Name() string {
 func (a *authTask) Dependencies() []string {
 	return []string{}
 }
+func (a *authTask) RetryPolicy() *RetryPolicy {
+	return nil // No retry policy for mock tasks
+}
 func (a *authTask) PreExecution(ctx context.Context, input map[string]any) error {
 	fmt.Println("PreExecution auth")
 	return nil
