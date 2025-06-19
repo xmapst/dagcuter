@@ -9,8 +9,8 @@ import (
 
 type RetryPolicy struct {
 	Interval    time.Duration `json:"interval" yaml:"interval"`
-	MaxAttempts int           `json:"max_attempts" yaml:"maxAttempts"`
-	MaxInterval string        `json:"max_interval" yaml:"maxInterval"`
+	MaxInterval time.Duration `json:"maxInterval" yaml:"maxInterval"`
+	MaxAttempts int           `json:"maxAttempts" yaml:"maxAttempts"`
 	Multiplier  float64       `json:"multiplier" yaml:"multiplier"`
 }
 
@@ -25,19 +25,27 @@ func (d *Dagcuter) newRetryExecutor(policy *RetryPolicy) *RetryExecutor {
 			MaxAttempts: -1,
 		}
 	}
+	if policy.Interval <= 0 {
+		policy.Interval = 1 * time.Second // Default interval of 1 second
+	}
+	if policy.MaxInterval <= 0 {
+		policy.MaxInterval = 30 * time.Second // Default maximum interval of 30 seconds
+	}
+	if policy.Multiplier <= 0 {
+		policy.Multiplier = 2.0 // Default multiplier of 2
+	}
 	return &RetryExecutor{policy: policy}
 }
 
 // ExecuteWithRetry executes a function with retry logic based on the provided policy.
-func (r *RetryExecutor) ExecuteWithRetry(ctx context.Context, taskName string, fn func() error) error {
+func (r *RetryExecutor) ExecuteWithRetry(ctx context.Context, taskName string, fn func(n int) error) error {
 	if r.policy.MaxAttempts <= 0 {
 		// No retry policy, execute directly
-		return fn()
+		return fn(0)
 	}
 
-	maxInterval, err := time.ParseDuration(r.policy.MaxInterval)
-	if err != nil || maxInterval > 150*time.Second {
-		maxInterval = 150 * time.Second // Default maximum interval of 150 seconds
+	if r.policy.MaxInterval > 150*time.Second {
+		r.policy.MaxInterval = 150 * time.Second // Default maximum interval of 150 seconds
 	}
 
 	var lastErr error
@@ -49,7 +57,7 @@ func (r *RetryExecutor) ExecuteWithRetry(ctx context.Context, taskName string, f
 		}
 
 		// Execute the task
-		if err = fn(); err == nil {
+		if err := fn(attempt); err == nil {
 			// Task executed successfully
 			return nil
 		} else {
@@ -62,7 +70,7 @@ func (r *RetryExecutor) ExecuteWithRetry(ctx context.Context, taskName string, f
 		}
 
 		// Calculate the backoff time using the retry policy
-		waitTime := r.calculateBackoff(attempt, maxInterval)
+		waitTime := r.calculateBackoff(attempt, r.policy.MaxInterval)
 
 		// Wait before the next retry
 		select {

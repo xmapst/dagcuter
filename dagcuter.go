@@ -110,7 +110,8 @@ func (d *Dagcuter) executeTask(ctx context.Context, name string, task Task, inpu
 	var result map[string]any
 
 	// use the retry executor to execute the task with retries
-	err := retryExecutor.ExecuteWithRetry(ctx, name, func() error {
+	err := retryExecutor.ExecuteWithRetry(ctx, name, func(n int) error {
+		inputs["attempt"] = n // Add attempt number to inputs for logging or debugging
 		// PreExecution
 		if err := task.PreExecution(ctx, inputs); err != nil {
 			return fmt.Errorf("pre execution failed: %w", err)
